@@ -63,8 +63,7 @@ Navigate to `open-data-workspace/docker/ckan/contrib/docker/` and run `docker-co
 
 > **Note**: After the first build, `--build` is only needed if changes are made to files in this directory; otherwise, `docker-compose up -d` will bring up the environment in detached mode.
 
-When initializing Postgres could take longer to spin up than CKAN. 
-* To fix restart the CKAN container: `docker-compose restart ckan`.
+When initializing Postgres could take longer to spin up than CKAN. To fix, restart the CKAN container: `docker-compose restart ckan`.
 
 #### a. Confirm running Docker containers and volumes
 The `docker container ls` command  will return a list of running containers. There should be five CKAN-related containers running:
@@ -107,9 +106,8 @@ The datastore has already been created, permissions just need to be set in order
 
 `docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissions -c /etc/ckan/production.ini | docker exec -i db psql -U ckan`
 
-Now the datastore API should return content when visiting:
-
-> http://localhost:5000/api/3/action/datastore_search?resource_id="_table_metadata"
+##### To test the set-up
+> http://localhost:5000/api/3/action/datastore_search?resource_id=_table_metadata
 
 #### b. Run Open Data installation script
 Install the necessary Open Data components:
