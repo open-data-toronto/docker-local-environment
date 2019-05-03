@@ -66,22 +66,22 @@ When initializing Postgres could take longer to spin up than CKAN. To fix, resta
 #### a. Confirm running Docker containers and volumes
 The `docker container ls` command  will return a list of running containers. There should be five CKAN-related containers running:
 
-1. ckan: CKAN with standard extensions
-2. db: CKAN’s database, later also running CKAN’s datastore database
-3. redis: A pre-built Redis image.
-4. solr: A pre-built SolR image set up for CKAN.
-5. datapusher: A pre-built CKAN Datapusher image.
+1. *ckan*: CKAN with standard extensions
+2. *db*: CKAN’s database, later also running CKAN’s datastore database
+3. *redis*: A pre-built Redis image.
+4. *solr*: A pre-built SolR image set up for CKAN.
+5. *datapusher*: A pre-built CKAN Datapusher image.
 
 There should be four named Docker volumes (`docker volume ls | grep docker`). They will be prefixed with the Docker Compose project name (default: `docker` or value of host environment variable `COMPOSE_PROJECT_NAME`.)
 
-1. docker_ckan_config: home of production.ini
-2. docker_ckan_home: home of ckan venv and source, later also additional CKAN extensions
-3. docker_ckan_storage: home of CKAN’s filestore (resource files)
-4. docker_pg_data: home of the database files for CKAN’s default and datastore databases
+1. *docker_ckan_config*: home of production.ini
+2. *docker_ckan_home*: home of ckan venv and source, later also additional CKAN extensions
+3. *docker_ckan_storage*: home of CKAN’s filestore (resource files)
+4. *docker_pg_data*: home of the database files for CKAN’s default and datastore databases
 
 Additionally, there should be two Open Data-specific containers:
-1. wordpress: the Front-End of the portal, in WordPress (http://localhost:8080/)
-2. mysql: persistent mySQL database for WordPress content
+1. *wordpress*: the Front-End of the portal, in WordPress (http://localhost:8080/)
+2. *mysql*: persistent mySQL database for WordPress content
 
 #### b. Confirm CKAN is online 
 CKAN will then be available in `http://localhost:5000`.
