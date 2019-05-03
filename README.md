@@ -40,7 +40,7 @@ Docker Compose is installed system-wide following the official [Docker Compose i
 
 To verify a successful Docker Compose installation, run `docker-compose version`.
 
-> **Note:** Docker Compose is not production-grade. This environment is for development purposes only. However, this is a starting point for replicating CKAN and WordPress elements in container orchestration platforms (e.g. Kubernetes, Docker Swarm, AWS ECS) for production deployment
+> **Note:** Docker Compose is not production-grade. This environment is for development purposes only. However, this is a starting for moving into a container orchestration platform (e.g. Kubernetes, Docker Swarm, AWS ECS).
 
 ## 2. Clone CKAN repository
 In the main directory:
