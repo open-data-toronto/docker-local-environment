@@ -7,4 +7,4 @@ pip install -r ckanext-spatial/pip-requirements.txt && \
 pip install ckanext-geoview && \
 pip install -e ckanext-opendatatoronto && \
 pip install -r ckanext-opendatatoronto/requirements.txt && \
-cp /open-data-workspace/open-data-private/environments/ckan/production.ini /etc/ckan/production.ini
+cp /open-data-workspace/docker-local-environment/production.ini /etc/ckan/production.ini
