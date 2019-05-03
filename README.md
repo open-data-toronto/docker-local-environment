@@ -3,9 +3,8 @@
 
 This tutorial covers the steps necessary for running a local development environment that replicates the set up used by Toronto Open Data. At a high level, the components in this environment include:
 
-1. CKAN: the data layer where the datasets and catalogue are stored
-2. WordPress: the presentation layer that displays the information from CKAN. This is the page end-users visit.
-3. Development instances: used for consistent development within Open Data. So far these include an Ubuntu instance running Jupyter Lab, ann an Alpine instance running NodeJS.
+1. *CKAN*: the data layer where the datasets and catalogue are stored
+2. *WordPress*: the presentation layer that displays the information from CKAN. This is the page end-users visit.
 
 ## 1. Requirements
 ### 1.1. Folder structure
@@ -159,17 +158,3 @@ Next, need to set the homepage so that http://localhost:8080/
 Go to `Settings --> Reading` and, under `Your homepage displays`:
 1. Select `A static page (select below)`
 2. Select `Homepage` in the `Homepage` dropdown
-
-### 5.5. Modify utils.js file
-From the main folder, navigate to `wp-open-data-toronto/wp-open-data-toronto/js` and locate the `utils.js` file. This file determines the CKAN URL to use for the API calls based on the WordPress URL.
-
-Since this is for local purposes only, we need to set have WordPress call the local CKAN. Replace `var config` with:
-
-```
-var config = {
-    'ckanAPI': 'http://' + "localhost:5000" + '/api/3/action/',
-    'ckanURL': 'http://' + "localhost:5000" 
-}
-```
-
-> **Note**: Alternatively, this could also be set to the Toronto Open Data Portal URL instead.
