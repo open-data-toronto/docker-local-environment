@@ -40,6 +40,9 @@ services:
       - ckan_storage:/var/lib/ckan
       - ../../../..:/open-data-workspace
       - ../../../../ckan-customization-open-data-toronto/:/usr/lib/ckan/venv/src/ckanext-opendatatoronto
+    depends_on:
+    - db
+    - solr
 
   datapusher:
     container_name: datapusher
