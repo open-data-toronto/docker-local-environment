@@ -102,18 +102,24 @@ for ((n=0;n<$CKAN_RESTART_COUNT;n++))
   done
 
 # ensure every container is running
+ALL_CONTAINERS_RUNNING=true
 for container in "${STACK_CONTAINERS[@]}"
   do
     lines=$(docker container ls --filter "name=$container" | grep $container | wc -l)
-    if [[ $lines == 1 ]]; then
-      echo "INFO | Container running: $container"
-    else
-      echo "ERROR | Container is not running: $container - $lines"
-      ALL_CONTAINERS_RUNNING=false
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      if [ $lines == 0 ]; then
+        echo "ERROR | Container is not running: $container"
+        ALL_CONTAINERS_RUNNING=false
+      fi
+    elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+      if [[ $lines == 0 ]]; then
+        echo "ERROR | Container is not running: $container"
+        ALL_CONTAINERS_RUNNING=false
+      fi
     fi
   done
 
-if [ "$ALL_CONTAINERS_RUNNING" = false ]; then
+if [ $ALL_CONTAINERS_RUNNING == false ]; then
     echo "ERROR | Exiting. Investigate why not all containers are running"
     return
 else
