@@ -142,4 +142,9 @@ echo "INFO | Restarting CKAN once more to apply extensions"
 docker-compose restart ckan
 
 echo "INFO | Quick start finished"
-docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add $ADMIN_USERNAME
+read -t 10 -p "Create an administrator user, $ADMIN_USERNAME? [y/n] " yn
+case $yn in
+    [Yy]* ) docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add $ADMIN_USERNAME;; #; break;;
+    [Nn]* ) echo "INFO | All done! Exiting."; return;;
+    * ) echo "WARNING | Invalid answer. Exiting."; return;;
+esac
