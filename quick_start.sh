@@ -65,7 +65,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|"ckanAPI": window.location.protocol + "//" + ckan + "/api/3/action/", "ckanURL": window.location.protocol + "//" + ckan|"ckanAPI":"http://localhost:5000/api/3/action/", "ckanURL":"http://localhost:5000"|g' "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
     echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
     
-    sed -i '' 's,CKAN_SITE_URL=http://localhost:5000,# CKAN_SITE_URL=http://localhost:5000,g' ../stack/ckan/contrib/docker/.env && \
+    sed -i '' 's,CKAN_SITE_URL=http://localhost:5000,# CKAN_SITE_URL=http://localhost:5000,g' "$CKAN_DOCKER_DIR/.env" && \
     sed -i '' 's,# CKAN_SITE_URL=http://docker.for.mac.localhost:5000,CKAN_SITE_URL=http://docker.for.mac.localhost:5000,g' "$CKAN_DOCKER_DIR/.env" && \
     echo "INFO | .env file CKAN_SITE_URL set to http://docker.for.mac.localhost:5000"
     
