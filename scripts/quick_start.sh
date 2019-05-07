@@ -1,8 +1,10 @@
 #! /bin/sh
-MAIN_DIR="$(pwd)"
+SCRIPTS_DIR="$(pwd)"
 OPEN_DATA_ORG="open-data-toronto"
 
+MAIN_DIR="$SCRIPTS_DIR/.."
 WORKSPACE_DIR="$MAIN_DIR/.."
+CONFIG_DIR="$MAIN_DIR/config"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
@@ -12,7 +14,7 @@ CKAN_GIT="https://github.com/ckan/ckan.git"
 CKAN_TAG="ckan-2.8.0"
 
 CKAN_RESTART_COUNT=5
-SLEEP_SECS=3
+SLEEP_SECS=6
 
 declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
@@ -55,8 +57,8 @@ git checkout $CKAN_TAG
 
 # Prepare Open Data configuration files
 echo "INFO | Preparing Open Data configuration files"
-cp "$MAIN_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
-cp "$MAIN_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$CONFIG_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
+cp "$CONFIG_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -90,11 +92,11 @@ for ((n=0;n<$CKAN_RESTART_COUNT;n++))
   do
     success_db=$(docker-compose logs ckan | grep "Initialising DB: SUCCESS")
     if [[ $success_db == "" ]]; then
-      echo "INFO | Postgres Database not yet initialized. Restarting CKAN - try $(echo $n+1 | bc)/$CKAN_RESTART_COUNT."
+      echo "INFO | Postgres Database not yet initialized. Restarting CKAN while waiting for it (try $(echo $n+1 | bc)/$CKAN_RESTART_COUNT)."
       sleep $SLEEP_SECS
       docker-compose restart ckan
     else
-        echo "INFO | Postgres Database initialized. Restarting one last time."
+        echo "INFO | Postgres Database initialized successfully. Restarting one last time just in case."
         docker-compose restart ckan
         n=$CKAN_RESTART_COUNT
     fi
@@ -122,7 +124,7 @@ if [ $ALL_CONTAINERS_RUNNING == false ]; then
     echo "ERROR | Exiting. Investigate why not all containers are running"
     return
 else
-  echo "INFO | All of the container expected are running"
+  echo "INFO | All expected containers are running"
 fi
 
 
@@ -134,7 +136,7 @@ docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissi
 sleep $SLEEP_SECS
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
-docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/install.sh
+docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install.sh
 
 sleep $SLEEP_SECS
 # restart CKAN
@@ -145,6 +147,20 @@ echo "INFO | Quick start finished"
 read -t 10 -p "Create an administrator user, $ADMIN_USERNAME? [y/n] " yn
 case $yn in
     [Yy]* ) docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add $ADMIN_USERNAME;; #; break;;
-    [Nn]* ) echo "INFO | All done! Exiting."; return;;
-    * ) echo "WARNING | Invalid answer. Exiting."; return;;
+    [Nn]* ) echo "INFO | Admin user will need to be created. Skipping.";;
+    * ) echo "WARNING | Invalid answer. Skipping.";;
 esac
+
+echo
+echo
+echo "================================================================================"
+echo
+echo "CKAN should be online and ready for development at http://localhost:5000/"
+echo
+echo "WordPress must be configured manually. Please refer to the documentation."
+echo
+echo "================================================================================"
+echo
+echo
+
+cd $MAIN_DIR
