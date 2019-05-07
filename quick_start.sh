@@ -73,9 +73,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "INFO | Postgres Dockerfile updated to pull Postgresql version 10"
 
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo "INFO: Configuring files for Linux."
+    echo "INFO | Configuring files for Linux."
     sed -i 's|"ckanAPI": window.location.protocol + "//" + ckan + "/api/3/action/", "ckanURL": window.location.protocol + "//" + ckan|"ckanAPI":"http://localhost:5000/api/3/action/", "ckanURL":"http://localhost:5000"|g' "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js" && \
-    echo "INFO: CKAN URL in WordPress utils.js will point to localhost:5000"
+    echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
 
     sed -i 's|mdillon/postgis|mdillon/postgis:10|g' "$CKAN_DOCKER_DIR/postgresql/Dockerfile" && \
     echo "INFO | Postgres Dockerfile updated to pull Postgresql version 10"
