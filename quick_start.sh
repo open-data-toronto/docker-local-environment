@@ -5,17 +5,16 @@ OPEN_DATA_ORG="open-data-toronto"
 WORKSPACE_DIR="$MAIN_DIR/.."
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
+CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
 
+ADMIN_USERNAME="admin"
 CKAN_GIT="https://github.com/ckan/ckan.git"
 CKAN_TAG="ckan-2.8.0"
-CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
 
 CKAN_RESTART_COUNT=5
 SLEEP_SECS=3
 
-ADMIN_USERNAME=admin
-
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
 
 
