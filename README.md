@@ -57,8 +57,9 @@ To verify a successful Docker Compose installation, run `docker-compose version`
 
 To install CKAN and the extensions we use in Open Data, we recommend running the "quick start" script we created to simplify this process and minimize errors.
 
-Go to `open-data-workspace/docker-local-environment/scripts` and run via::
-. quick_start_ckan.sh
+Go to `open-data-workspace/docker-local-environment/scripts` and run via:
+
+    . quick_start_ckan.sh
 
 CKAN will then be available at: http://localhost:5000/
 
@@ -66,8 +67,9 @@ CKAN will then be available at: http://localhost:5000/
 
 ### Creating a user administrator
 
-At the end of the installation script, you will be prompted to create an administration user (by default, the username is `admin`). If the prompt timesout, you opt to skip it for now, or want to create another user in the future, run the command below (in this example, the user is called `admin` but you can change that)::
-docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add admin
+At the end of the installation script, you will be prompted to create an administration user (by default, the username is `admin`). If the prompt timesout, you opt to skip it for now, or want to create another user in the future, run the command below (in this example, the user is called `admin` but you can change that):
+
+    docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add admin
 
 A few important notes around creating users:
 1. Command will only work when the CKAN container is running
@@ -96,8 +98,9 @@ There should also be four named Docker volumes (`docker volume ls | grep docker`
 
 ### Developing on CKAN
 
-The Toronto Open Data extension files are mounted from the local directory at `open-data-workspace/ckan-customization-open-data-toronto`. Changes in the local directory will be reflected after restarting the container; to do so, go to the location of the `docker-compose.yml` file (`open-data-workspace/stack/ckan/contrib/docker`) and run::
-docker-compose restart ckan
+The Toronto Open Data extension files are mounted from the local directory at `open-data-workspace/ckan-customization-open-data-toronto`. Changes in the local directory will be reflected after restarting the container; to do so, go to the location of the `docker-compose.yml` file (`open-data-workspace/stack/ckan/contrib/docker`) and run:
+
+    docker-compose restart ckan
 
 ## 3. Set-up Wordpress
 
@@ -155,17 +158,21 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 
 > *Note*: all docker-compose commands must be run from the location of the docker-compose.yml file, which by default is at `open-data-workspace/stack/ckan/contrib/docker`
 
-To view logs::
-docker-compose logs
+To view logs:
 
-To print the logs live, pass `-f` as an argument like so::
-docker-compose logs -f
+    docker-compose logs
 
-To view the logs for a single service, end with the name of the container. For example::
-docker-compose logs ckan
+To print the logs live, pass `-f` as an argument like so:
 
-Will print out the logs from the CKAN service only, if we substitute that with "db" (name of the Postgres container) will print out only those logs and so on. We can bring all that together and use, for example::
-docker-compose logs -f solr
+    docker-compose logs -f
+
+To view the logs for a single service, end with the name of the container. For example:
+
+    docker-compose logs ckan
+
+Will print out the logs from the CKAN service only, if we substitute that with "db" (name of the Postgres container) will print out only those logs and so on. We can bring all that together and use, for example:
+
+    docker-compose logs -f solr
 
 To follow the logs for solr only.
 
@@ -173,13 +180,15 @@ To follow the logs for solr only.
 
 Sometimes the solr index goes out of sync with CKAN, and it needs to be rebuilt. If this is the case, don't worry! Your data is still there.
 
-To rebuild the index, run the command below from outside the container::
-docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan search-index rebuild -c /etc/ckan/production.ini
+To rebuild the index, run the command below from outside the container:
+
+    docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan search-index rebuild -c /etc/ckan/production.ini
 
 ### 5.2. Help! CKAN keeps crashing when initializing
 
-Often when initializing Postgres could take longer to spin up than CKAN; to fix restart the CKAN container a few times via::
-docker-compose restart ckan
+Often when initializing Postgres could take longer to spin up than CKAN; to fix restart the CKAN container a few times via:
+
+    docker-compose restart ckan
 
 ## 6. Contribution
 
