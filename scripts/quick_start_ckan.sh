@@ -17,22 +17,34 @@ CKAN_TAG="ckan-2.8.0"
 CKAN_RESTART_COUNT=5
 SLEEP_SECS=6
 
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.1.1" "wp-open-data-toronto:v2.1.1")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
-
 
 # Set up OD workspace
 echo "INFO | Setting up OD workspace"
-for repo in "${OPEN_DATA_REPOS[@]}"
+for repo_string in "${OPEN_DATA_REPOS[@]}"
   do
+      arrIN=(${repo_string//:/ })
+      repo=${arrIN[0]}
+      tag=${arrIN[1]}
+      if [[ "$tag" == "" ]]; then
+        tag="master"
+      fi
+
     if [ -d "$WORKSPACE_DIR/$repo" ]; then
       echo "INFO | Pulling repo: $repo"
       cd "$WORKSPACE_DIR/$repo"
+      git reset --hard
+      git checkout master
       git pull
     else
       echo "INFO | Cloning repo: $repo"
       git clone "https://github.com/$OPEN_DATA_ORG/$repo.git" "$MAIN_DIR/../$repo"
     fi
+
+    cd "$WORKSPACE_DIR/$repo"
+    git checkout $tag
+      
   done
 
 # Create Open Data Stack folder
