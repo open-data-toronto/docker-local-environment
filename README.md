@@ -72,6 +72,7 @@ At the end of the installation script, you will be prompted to create an adminis
     docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add admin
 
 A few important notes around creating users:
+
 1. Command will only work when the CKAN container is running
 2. Users can be created through the UI but they can only be made administrators via the command above
 3. When running that command, the user will be created if it does not exist
@@ -176,7 +177,7 @@ Will print out the logs from the CKAN service only, if we substitute that with "
 
 To follow the logs for solr only.
 
-### 5.1. Help! CKAN is not showing any datasets but I know they are there
+### Help! CKAN is not showing any datasets but I know they are there
 
 Sometimes the solr index goes out of sync with CKAN, and it needs to be rebuilt. If this is the case, don't worry! Your data is still there.
 
@@ -184,7 +185,7 @@ To rebuild the index, run the command below from outside the container:
 
     docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan search-index rebuild -c /etc/ckan/production.ini
 
-### 5.2. Help! CKAN keeps crashing when initializing
+### Help! CKAN keeps crashing when initializing
 
 Often when initializing Postgres could take longer to spin up than CKAN; to fix restart the CKAN container a few times via:
 
@@ -204,7 +205,7 @@ Please develop in your own branch and create Pull Requests into the `dev` branch
 
 ### HELP WANTED
 
-Quick start only works for Linux and MacOS. We would like some help to port it over to Winows as well.
+Quick start only works for Linux and MacOS. We would like some help to port it over to Windows as well.
 
 Contact carlos.hernandez@toronto.ca if interested
 
