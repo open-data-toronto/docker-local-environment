@@ -8,6 +8,7 @@ CONFIG_DIR="$MAIN_DIR/config"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
+WP_THEME_DIR="$MAIN_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
 ADMIN_USERNAME="admin"
 CKAN_GIT="https://github.com/ckan/ckan.git"
@@ -59,6 +60,7 @@ git checkout $CKAN_TAG
 echo "INFO | Preparing Open Data configuration files"
 cp "$CONFIG_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
 cp "$CONFIG_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$CONFIG_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
