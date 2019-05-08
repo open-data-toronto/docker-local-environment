@@ -126,15 +126,15 @@ Go to `Settings --> Permalinks`, select `Post name` under Common Settings, and s
 Go to `Pages` and create the following pages:
 
 * Page: Data Catalogue
-    * Permalink: http://localhost:8080/catalogue/
-    * Template: Catalogue Page
+  * Permalink: http://localhost:8080/catalogue/
+  * Template: Catalogue Page
 * Page: Homepage
-    * Permalink: http://localhost:8080/homepage/
-    * Template: Homepage
+  * Permalink: http://localhost:8080/homepage/
+  * Template: Homepage
 * Page: Dataset
-    * Permalink: http://localhost:8080/dataset/
-    * Template: Dataset Page
-    
+  * Permalink: http://localhost:8080/dataset/
+  * Template: Dataset Page
+
 These are needed for triggering the JS needed to populate the homepage, data catalogue, and dataset pages from CKAN.
 
 ### 3.4. Set homepage
@@ -142,6 +142,7 @@ These are needed for triggering the JS needed to populate the homepage, data cat
 Next, need to set the homepage so that http://localhost:8080/
 
 Go to `Settings --> Reading` and, under `Your homepage displays`:
+
 1. Select `A static page (select below)`
 2. Select `Homepage` in the `Homepage` dropdown
 
@@ -151,7 +152,6 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 
 1. Bringing it online: `docker-compose up`
 2. Shutting it down: `docker-compose down`
-
 
 > **Note**: Will work for both CKAN *AND* WordPress, because they are under the same Docker Compose file. This could be decoupled in the future.
 
