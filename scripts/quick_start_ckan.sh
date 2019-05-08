@@ -136,7 +136,7 @@ docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissi
 sleep $SLEEP_SECS
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
-docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install.sh
+docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install_ckan_extensions.sh
 
 sleep $SLEEP_SECS
 # restart CKAN
