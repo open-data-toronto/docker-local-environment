@@ -35,7 +35,7 @@ open-data-workspace
 
 ### 1.3. Docker
 
-#### a. Docker
+#### Docker
 
 Docker is installed system-wide following the official Docker CE installation guidelines:
 
@@ -45,7 +45,7 @@ Docker is installed system-wide following the official Docker CE installation gu
 
 To verify a successful Docker installation, run `docker run hello-world`. `docker version` should output versions for client and server.
 
-#### b. Docker Compose (Linux only, already included in Docker for Mac/Windows)
+#### Docker Compose (Linux only, already included in Docker for Mac/Windows)
 
 Docker Compose is installed system-wide following the official [Docker Compose installation guidelines](https://docs.docker.com/compose/install/). Can also be installed inside a virtual environment separate from the one inside the CKAN container and would need to be activated before running Docker Compose commands.
 
