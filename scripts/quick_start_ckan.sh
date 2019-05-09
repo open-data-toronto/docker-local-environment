@@ -8,7 +8,7 @@ CONFIG_DIR="$MAIN_DIR/config"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
-WP_THEME_DIR="$MAIN_DIR/wp-open-data-toronto/wp-open-data-toronto"
+WP_THEME_DIR="$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
 CKAN_GIT="https://github.com/ckan/ckan.git"
 CKAN_TAG="ckan-2.8.0"
