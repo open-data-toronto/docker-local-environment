@@ -2,7 +2,9 @@
 
 > **Intended audience:** technical Open Data team members, municipalities, collaborators, and friends who want to contribute to Open Data.
 
-This tutorial covers the steps necessary for running a local environment that replicates the set-up used by Toronto Open Data. At a high level, the components in this environment include:
+This tutorial covers the steps necessary for running a local environment that replicates the set-up used by Toronto Open Data.
+
+This is what we use ourselves for development purposes. At a high level, the components in this environment include:
 
 1. *[CKAN](https://ckan.org/)*: the leading open source open data platform we are using to store our catalogue and power our APIs for consuming data. Effectively the data layer.
 2. *[WordPress](https://wordpress.com/)*: the site end-users actually see, in essence communicates with CKAN and creates pages dynamically. This is the presentation layer.
@@ -15,7 +17,7 @@ For the time being, Quick Start only works for Linux and MacOS. Expansion to Win
 
 ### 1.2. Folder structure
 
-For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the `**workspace directory**`. Essentially:
+For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the *workspace directory*. Essentially:
 
 ```
 
@@ -31,11 +33,7 @@ open-data-workspace
 
 #### Docker
 
-Docker is installed system-wide following the official Docker CE installation guidelines:
-
-* [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-* [Mac](https://docs.docker.com/docker-for-mac/install/)
-* [Windows](https://docs.docker.com/docker-for-windows/install/)
+Docker is installed system-wide following the official Docker CE installation guidelines ([Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [Mac](https://docs.docker.com/docker-for-mac/install/), [Windows](https://docs.docker.com/docker-for-windows/install/)).
 
 To verify a successful Docker installation, run `docker run hello-world`. `docker version` should output versions for client and server.
 
@@ -47,7 +45,9 @@ To verify a successful Docker Compose installation, run `docker-compose version`
 
 > **IMPORTANT:** Docker Compose is **not production-grade**. This environment is for development purposes only. However, this is a starting for moving into a container orchestration platform (e.g. Kubernetes, Docker Swarm).
 
-## 2. Set-up CKAN
+## 2. Set-up
+
+### 2.1. CKAN
 
 To install CKAN and the extensions we use in Open Data, we recommend running the "quick start" script we created to simplify this process and minimize errors.
 
@@ -59,29 +59,31 @@ CKAN will then be available at: http://localhost:5000/
 
 > **IMPORTANT!** The script must be run from within the directory. For detailed steps on what this script does, see the [scripts folder](https://github.com/open-data-toronto/docker-local-environment/tree/master/scripts).
 
-### Creating a user administrator
+#### Creating an administrator user
 
-At the end of the installation script, you will be prompted to create an administration user (by default, the username is `admin`). If the prompt timesout, you opt to skip it for now, or want to create another user in the future, run the command below (in this example, the user is called `admin` but you can change that):
+At the end you will be prompted to create a user administrator. To create another administrator, run (`johndoe` in this example):
 
-    docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add admin
+    docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add johndoe
 
 A few important notes around creating users:
 
 1. Command will only work when the CKAN container is running
-2. Users can be created through the UI but they can only be made administrators via the command above
-3. When running that command, the user will be created if it does not exist
+2. Users can be created via the UI but must be made admins via the command above
+3. The user will be created if it does not exist
 
-### Developing on CKAN
+#### Developing on CKAN
 
-The Toronto Open Data extension files are mounted from the local directory at `open-data-workspace/ckan-customization-open-data-toronto`. Changes in the local directory will be reflected after restarting the container; to do so, go to the location of the `docker-compose.yml` file (`open-data-workspace/stack/ckan/contrib/docker`) and run:
+The Toronto Open Data extension files are mounted from the local directory at `open-data-workspace/ckan-customization-open-data-toronto`. Local changes will be reflected upon restarting the container.
+
+To restart the container go to `open-data-workspace/stack/ckan/contrib/docker` (where the `docker-compose.yml` file is) and run:
 
     docker-compose restart ckan
 
-## 3. Set-up Wordpress
+### 2.2. Wordpress
 
 From your browser, visit `http://localhost:8080` and fill out the form to set-up a WordPress site.
 
-### 3.1. Activate the WP Open Data Toronto Theme
+#### A. Activate the WP Open Data Toronto Theme
 
 From the administrator dashboard at `http://localhost:8080/wp-admin` follow the steps below:
 
@@ -91,36 +93,46 @@ From the administrator dashboard at `http://localhost:8080/wp-admin` follow the 
 
 > **Note**: Theme is mounted from the local directory `open-data-workspace/wp-open-data-toronto/`. Changes in the local directory are thus reflected in WordPress immediately upon browser refresh.
 
-### 3.2. Update permalink format
+#### B. Update permalink format
 
 Go to `Settings --> Permalinks`, select `Post name` under Common Settings, and save the changes.
 
-### 3.3. Create placeholder WordPress pages
+#### C. Create pages
 
 Go to `Pages` and create the following pages:
 
-* Page: Data Catalogue
+* Catalogue
   * Permalink: http://localhost:8080/catalogue/
   * Template: Catalogue Page
-* Page: Homepage
+* Homepage
   * Permalink: http://localhost:8080/homepage/
   * Template: Homepage
-* Page: Dataset
+* Dataset
   * Permalink: http://localhost:8080/dataset/
   * Template: Dataset Page
 
-These are needed for triggering the JS needed to populate the homepage, data catalogue, and dataset pages from CKAN.
+These are needed for the JavaScript to populate pages with CKAN content.
 
-### 3.4. Set homepage
+#### D. Set homepage
 
-Next, need to set the homepage so that http://localhost:8080/
-
-Go to `Settings --> Reading` and, under `Your homepage displays`:
+Next, need to set the homepage. Go to `Settings --> Reading` and, under `Your homepage displays`:
 
 1. Select `A static page (select below)`
 2. Select `Homepage` in the `Homepage` dropdown
 
-### 4. Bring the environment up/down
+### 2.3. Examples (optional)
+
+After the environment is online, you can load the environment with a number of example datasets to give an idea of the different features in the portal.
+
+To populate it, log into CKAN and get the API Key from the user page.
+
+Then run the command below from any directory, substituting **<API_KEY>** with the one from above.
+
+    docker exec ckan bash /open-data-workspace/docker-local-environment/scripts/ckan_init.sh <API_KEY>
+
+Afterwards, the environment will be loaded with 4 datasets: geospatial - polygons, geospatial - points, tabular, and document.
+
+## 3. Bring the environment up/down
 
 To bring the environment "up" (online) or "down" (i.e. shut down) will need to go to `open-data-workspace/stack/ckan/contrib/docker` and execute the commands below.
 
@@ -128,6 +140,13 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 2. Shutting it down: `docker-compose down`
 
 > **Note**: Will work for both CKAN *AND* WordPress, because they are under the same Docker Compose file. This could be decoupled in the future.
+
+## 4. Limitations
+
+Although we constantly strive to make the environment as close to reality as possible, but there are a number of issues we are still working through:
+
+* Datapusher is not working, uploaded files are not pushed to the datastore. In the meantime, use the [Datastore API](https://docs.ckan.org/en/2.8/maintaining/datastore.html)
+* Featured posts are not dispayed in homepage
 
 ## 5. Troubleshooting
 
