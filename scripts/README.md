@@ -32,3 +32,11 @@ There should also be four named Docker volumes (`docker volume ls | grep docker`
 3. *docker_ckan_storage*: filestore (i.e. where dataset resources are stored)
 4. *docker_pg_data*: data for CKAN’s Postgres database
 5. *docker_solr*: persistent solr data
+
+## GitHub repositories cloned (if they do not exist) or reset (if they do)
+
+* [ckan-customization-open-data-toronto](https://github.com/open-data-toronto/ckan-customization-open-data-toronto): CKAN extension and plugins created for Open Data Toronto specifically.
+* [wp-open-data-toronto](https://github.com/open-data-toronto/wp-open-data-toronto): WordPress theme files created for Open Data Toronto specifically.
+* [ckan](https://github.com/ckan/ckan): for the CKAN code and Dockerfiles/docker compose files of images used for the environment.
+
+> **IMPORTANT!** if these repositories already exist they will be reset and all changes will be lost. Make sure to store any desired changes somewhere else before running the quick start and copy them over when done.
