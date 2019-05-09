@@ -87,36 +87,46 @@ From the administrator dashboard at `http://localhost:8080/wp-admin` follow the 
 
 > **Note**: Theme is mounted from the local directory `open-data-workspace/wp-open-data-toronto/`. Changes in the local directory are thus reflected in WordPress immediately upon browser refresh.
 
-### 3.2. Update permalink format
+#### B. Update permalink format
 
 Go to `Settings --> Permalinks`, select `Post name` under Common Settings, and save the changes.
 
-### 3.3. Create placeholder WordPress pages
+#### C. Create pages
 
 Go to `Pages` and create the following pages:
 
-* Page: Catalogue
+* Catalogue
   * Permalink: http://localhost:8080/catalogue/
   * Template: Catalogue Page
-* Page: Homepage
+* Homepage
   * Permalink: http://localhost:8080/homepage/
   * Template: Homepage
-* Page: Dataset
+* Dataset
   * Permalink: http://localhost:8080/dataset/
   * Template: Dataset Page
 
-These are needed for triggering the JS needed to populate the homepage, data catalogue, and dataset pages from CKAN.
+These are needed for the JavaScript to populate pages with CKAN content.
 
-### 3.4. Set homepage
+#### D. Set homepage
 
-Next, need to set the homepage so that http://localhost:8080/
-
-Go to `Settings --> Reading` and, under `Your homepage displays`:
+Next, need to set the homepage. Go to `Settings --> Reading` and, under `Your homepage displays`:
 
 1. Select `A static page (select below)`
 2. Select `Homepage` in the `Homepage` dropdown
 
-### 4. Bring the environment up/down
+### 2.3. Examples (optional)
+
+After the environment is online, you can load the environment with a number of example datasets to give an idea of the different features in the portal.
+
+To populate it, log into CKAN and get the API Key from the user page.
+
+Then run the command below from any directory, substituting **<API_KEY>** with the one from above.
+
+    docker exec ckan bash /open-data-workspace/docker-local-environment/scripts/ckan_init.sh <API_KEY>
+
+Afterwards, the environment will be loaded with 4 datasets: geospatial - polygons, geospatial - points, tabular, and document.
+
+## 3. Bring the environment up/down
 
 To bring the environment "up" (online) or "down" (i.e. shut down) will need to go to `open-data-workspace/stack/ckan/contrib/docker` and execute the commands below.
 
