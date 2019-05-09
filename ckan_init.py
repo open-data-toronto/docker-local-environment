@@ -3,6 +3,7 @@ from shapely.geometry import mapping
 
 import json
 import re
+import sys
 
 import ckanapi
 import geopandas as gpd
@@ -33,7 +34,7 @@ def get_fields(data):
     } for x in data.columns]
 
 if __name__ == '__main__':
-    apikey = input('What\'s your CKAN API key?\n')
+    apikey = sys.argv[1]
     ckan = ckanapi.RemoteCKAN(
         address='http://localhost:5000',
         apikey=apikey
