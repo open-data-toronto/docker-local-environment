@@ -25,13 +25,7 @@ open-data-workspace
 
 ```
 
-> **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process.
-
-#### GitHub repositories cloned throughout the process
-
-* [ckan-customization-open-data-toronto](https://github.com/open-data-toronto/ckan-customization-open-data-toronto): CKAN extension and plugins created for Open Data Toronto specifically.
-* [wp-open-data-toronto](https://github.com/open-data-toronto/wp-open-data-toronto): WordPress theme files created for Open Data Toronto specifically.
-* [ckan](https://github.com/ckan/ckan): for the CKAN code and Dockerfiles/docker compose files of images used for the environment.
+> **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process. Repos that already exist in the workspace directory will be reset and any changes will be lost - 
 
 ### 1.3. Docker
 
