@@ -20,7 +20,7 @@ The `docker container ls` command  will return a list of running containers. The
 3. *redis*: A pre-built Redis image.
 4. *solr*: A pre-built SolR image set up for CKAN.
 5. *datapusher*: A pre-built CKAN Datapusher image.
-6. *wordpress*: the Front-End of the portal, in WordPress (http://localhost:8080/)
+6. *wordpress*: the Front-End of the portal, in WordPress ([http://localhost:8080/](http://localhost:8080/))
 7. *mysql*: persistent mySQL database for WordPress content
 
 ## Docker volumes used for persistent storage
