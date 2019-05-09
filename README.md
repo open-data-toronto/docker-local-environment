@@ -177,7 +177,7 @@ Will print out the logs from the CKAN service only, if we substitute that with "
 
 To follow the logs for solr only.
 
-### Help! CKAN is not showing any datasets but I know they are there
+### CKAN is not showing any datasets but I know they are there
 
 Sometimes the solr index goes out of sync with CKAN, and it needs to be rebuilt. If this is the case, don't worry! Your data is still there.
 
@@ -185,7 +185,7 @@ To rebuild the index, run the command below from outside the container:
 
     docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan search-index rebuild -c /etc/ckan/production.ini
 
-### Help! CKAN keeps crashing when initializing
+### CKAN keeps crashing when initializing
 
 Often when initializing Postgres could take longer to spin up than CKAN; to fix restart the CKAN container a few times via:
 
