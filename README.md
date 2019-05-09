@@ -31,11 +31,7 @@ open-data-workspace
 
 #### Docker
 
-Docker is installed system-wide following the official Docker CE installation guidelines:
-
-* [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-* [Mac](https://docs.docker.com/docker-for-mac/install/)
-* [Windows](https://docs.docker.com/docker-for-windows/install/)
+Docker is installed system-wide following the official Docker CE installation guidelines ([Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [Mac](https://docs.docker.com/docker-for-mac/install/), [Windows](https://docs.docker.com/docker-for-windows/install/)).
 
 To verify a successful Docker installation, run `docker run hello-world`. `docker version` should output versions for client and server.
 
