@@ -25,17 +25,11 @@ open-data-workspace
 
 ```
 
-> **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process.
-
-#### GitHub repositories cloned throughout the process
-
-* [ckan-customization-open-data-toronto](https://github.com/open-data-toronto/ckan-customization-open-data-toronto): CKAN extension and plugins created for Open Data Toronto specifically.
-* [wp-open-data-toronto](https://github.com/open-data-toronto/wp-open-data-toronto): WordPress theme files created for Open Data Toronto specifically.
-* [ckan](https://github.com/ckan/ckan): for the CKAN code and Dockerfiles/docker compose files of images used for the environment.
+> **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process. Repos that already exist in the workspace directory will be reset and any changes will be lost - 
 
 ### 1.3. Docker
 
-#### a. Docker
+#### Docker
 
 Docker is installed system-wide following the official Docker CE installation guidelines:
 
@@ -45,7 +39,7 @@ Docker is installed system-wide following the official Docker CE installation gu
 
 To verify a successful Docker installation, run `docker run hello-world`. `docker version` should output versions for client and server.
 
-#### b. Docker Compose (Linux only, already included in Docker for Mac/Windows)
+#### Docker Compose (Linux only, already included in Docker for Mac/Windows)
 
 Docker Compose is installed system-wide following the official [Docker Compose installation guidelines](https://docs.docker.com/compose/install/). Can also be installed inside a virtual environment separate from the one inside the CKAN container and would need to be activated before running Docker Compose commands.
 
@@ -63,7 +57,7 @@ Go to `open-data-workspace/docker-local-environment/scripts` and run via:
 
 CKAN will then be available at: http://localhost:5000/
 
-> For detailed steps on what this script does, refer to the ReadMe in the same folder.
+> **IMPORTANT!** The script must be run from within the directory. For detailed steps on what this script does, see the [scripts folder](https://github.com/open-data-toronto/docker-local-environment/tree/master/scripts).
 
 ### Creating a user administrator
 
@@ -72,29 +66,10 @@ At the end of the installation script, you will be prompted to create an adminis
     docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add admin
 
 A few important notes around creating users:
+
 1. Command will only work when the CKAN container is running
 2. Users can be created through the UI but they can only be made administrators via the command above
 3. When running that command, the user will be created if it does not exist
-
-### Confirming all containers are running
-
-The `docker container ls` command  will return a list of running containers. There should be 7:
-
-1. *ckan*: CKAN with standard extensions
-2. *db*: CKAN’s database, later also running CKAN’s datastore database
-3. *redis*: A pre-built Redis image.
-4. *solr*: A pre-built SolR image set up for CKAN.
-5. *datapusher*: A pre-built CKAN Datapusher image.
-6. *wordpress*: the Front-End of the portal, in WordPress (http://localhost:8080/)
-7. *mysql*: persistent mySQL database for WordPress content
-
-There should also be four named Docker volumes (`docker volume ls | grep docker`) prefixed with the Docker Compose project name (default: `docker` or value of host environment variable `COMPOSE_PROJECT_NAME`.)
-
-1. *docker_ckan_config*: home of production.ini
-2. *docker_ckan_home*: files used by CKAN
-3. *docker_ckan_storage*: filestore (i.e. where dataset resources are stored)
-4. *docker_pg_data*: data for CKAN’s Postgres database
-5. *docker_solr*: persistent solr data
 
 ### Developing on CKAN
 
@@ -125,15 +100,15 @@ Go to `Settings --> Permalinks`, select `Post name` under Common Settings, and s
 Go to `Pages` and create the following pages:
 
 * Page: Data Catalogue
-    * Permalink: http://localhost:8080/catalogue/
-    * Template: Catalogue Page
+  * Permalink: http://localhost:8080/catalogue/
+  * Template: Catalogue Page
 * Page: Homepage
-    * Permalink: http://localhost:8080/homepage/
-    * Template: Homepage
+  * Permalink: http://localhost:8080/homepage/
+  * Template: Homepage
 * Page: Dataset
-    * Permalink: http://localhost:8080/dataset/
-    * Template: Dataset Page
-    
+  * Permalink: http://localhost:8080/dataset/
+  * Template: Dataset Page
+
 These are needed for triggering the JS needed to populate the homepage, data catalogue, and dataset pages from CKAN.
 
 ### 3.4. Set homepage
@@ -141,6 +116,7 @@ These are needed for triggering the JS needed to populate the homepage, data cat
 Next, need to set the homepage so that http://localhost:8080/
 
 Go to `Settings --> Reading` and, under `Your homepage displays`:
+
 1. Select `A static page (select below)`
 2. Select `Homepage` in the `Homepage` dropdown
 
@@ -150,7 +126,6 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 
 1. Bringing it online: `docker-compose up`
 2. Shutting it down: `docker-compose down`
-
 
 > **Note**: Will work for both CKAN *AND* WordPress, because they are under the same Docker Compose file. This could be decoupled in the future.
 
@@ -176,7 +151,7 @@ Will print out the logs from the CKAN service only, if we substitute that with "
 
 To follow the logs for solr only.
 
-### 5.1. Help! CKAN is not showing any datasets but I know they are there
+### CKAN is not showing any datasets but I know they are there
 
 Sometimes the solr index goes out of sync with CKAN, and it needs to be rebuilt. If this is the case, don't worry! Your data is still there.
 
@@ -184,7 +159,7 @@ To rebuild the index, run the command below from outside the container:
 
     docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan search-index rebuild -c /etc/ckan/production.ini
 
-### 5.2. Help! CKAN keeps crashing when initializing
+### CKAN keeps crashing when initializing
 
 Often when initializing Postgres could take longer to spin up than CKAN; to fix restart the CKAN container a few times via:
 
@@ -204,7 +179,7 @@ Please develop in your own branch and create Pull Requests into the `dev` branch
 
 ### HELP WANTED
 
-Quick start only works for Linux and MacOS. We would like some help to port it over to Winows as well.
+Quick start only works for Linux and MacOS. We would like some help to port it over to Windows as well.
 
 Contact carlos.hernandez@toronto.ca if interested
 

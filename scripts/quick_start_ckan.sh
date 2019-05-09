@@ -8,6 +8,7 @@ CONFIG_DIR="$MAIN_DIR/config"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
+WP_THEME_DIR="$MAIN_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
 ADMIN_USERNAME="admin"
 CKAN_GIT="https://github.com/ckan/ckan.git"
@@ -16,22 +17,34 @@ CKAN_TAG="ckan-2.8.0"
 CKAN_RESTART_COUNT=5
 SLEEP_SECS=6
 
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.1.1" "wp-open-data-toronto:v2.1.1")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
-
 
 # Set up OD workspace
 echo "INFO | Setting up OD workspace"
-for repo in "${OPEN_DATA_REPOS[@]}"
+for repo_string in "${OPEN_DATA_REPOS[@]}"
   do
+      arrIN=(${repo_string//:/ })
+      repo=${arrIN[0]}
+      tag=${arrIN[1]}
+      if [[ "$tag" == "" ]]; then
+        tag="master"
+      fi
+
     if [ -d "$WORKSPACE_DIR/$repo" ]; then
       echo "INFO | Pulling repo: $repo"
       cd "$WORKSPACE_DIR/$repo"
+      git reset --hard
+      git checkout master
       git pull
     else
       echo "INFO | Cloning repo: $repo"
       git clone "https://github.com/$OPEN_DATA_ORG/$repo.git" "$MAIN_DIR/../$repo"
     fi
+
+    cd "$WORKSPACE_DIR/$repo"
+    git checkout $tag
+      
   done
 
 # Create Open Data Stack folder
@@ -59,6 +72,7 @@ git checkout $CKAN_TAG
 echo "INFO | Preparing Open Data configuration files"
 cp "$CONFIG_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
 cp "$CONFIG_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$CONFIG_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -136,7 +150,7 @@ docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissi
 sleep $SLEEP_SECS
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
-docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install.sh
+docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install_ckan_extensions.sh
 
 sleep $SLEEP_SECS
 # restart CKAN
