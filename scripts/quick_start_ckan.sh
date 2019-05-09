@@ -10,7 +10,6 @@ CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
 WP_THEME_DIR="$MAIN_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
-ADMIN_USERNAME="admin"
 CKAN_GIT="https://github.com/ckan/ckan.git"
 CKAN_TAG="ckan-2.8.0"
 
@@ -141,22 +140,34 @@ fi
 
 
 sleep $SLEEP_SECS
+
 # install DataStore
 echo "INFO | Installing CKAN Datastore"
 docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissions -c /etc/ckan/production.ini | docker exec -i db psql -U ckan
 
-sleep $SLEEP_SECS
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
 docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install_ckan_extensions.sh
 
-sleep $SLEEP_SECS
 # restart CKAN
 echo "INFO | Restarting CKAN once more to apply extensions"
 docker-compose restart ckan
 
-echo "INFO | Quick start finished"
-read -t 10 -p "Create an administrator user, $ADMIN_USERNAME? [y/n] " yn
+sleep $SLEEP_SECS
+
+echo
+echo
+echo "================================================================================"
+echo
+echo "INFO | CKAN Installed and configured"
+echo
+echo "================================================================================"
+echo
+echo
+
+echo "INFO | Create administrator"
+read -p "Enter username: " ADMIN_USERNAME
+read -p "Create user $ADMIN_USERNAME? [y/n] " yn
 case $yn in
     [Yy]* ) docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add $ADMIN_USERNAME;; #; break;;
     [Nn]* ) echo "INFO | Admin user will need to be created. Skipping.";;
