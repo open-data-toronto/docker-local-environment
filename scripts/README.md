@@ -11,7 +11,7 @@ These scripts were created to facilitate the installation and configuration of t
 5. Replaces default files with ones specific to the environment (e.g. configuration, settings, etc)
 6. Builds and initializes all parts of the environment via `docker-compose.yml`
 
-## Docker containers that compose the environment 
+## Docker containers that compose the environment
 
 The `docker container ls` command  will return a list of running containers. There should be 7:
 
