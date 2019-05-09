@@ -86,14 +86,14 @@ if __name__ == '__main__':
         package_id=package_document['id'],
         name='Document Data',
         resource_type='upload',
-        url='./ckan_init/BodySafe Data.csv',
+        url='./BodySafe Data.csv',
         format='CSV',
         is_preview='false'
     )
 
     print('Sample document package successfully created and populated with resource')
 
-    tabular = pd.read_csv('./ckan_init/BodySafe Data.csv')
+    tabular = pd.read_csv('./BodySafe Data.csv')
     package_tabular = ckan.action.package_create(
         name='example-tabular-data',
         title='Example Tabular Data',
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
     print('Sample tabular package successfully created and populated with resource')
 
-    points = gpd.read_file('./ckan_init/Bicycle Shops Data.geojson')
+    points = gpd.read_file('./Bicycle Shops Data.geojson')
     points['geometry'] = points['geometry'].apply(lambda x: json.dumps(mapping(x)))
 
     package_points = ckan.action.package_create(
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
     print('Sample maps package (points) successfully created and populated with resource')
 
-    polygons = gpd.read_file('./ckan_init/City Wards Data.geojson')
+    polygons = gpd.read_file('./City Wards Data.geojson')
     polygons['geometry'] = polygons['geometry'].apply(lambda x: json.dumps(mapping(x)))
 
     package_polygons = ckan.action.package_create(
