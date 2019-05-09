@@ -63,7 +63,7 @@ Go to `open-data-workspace/docker-local-environment/scripts` and run via:
 
 CKAN will then be available at: http://localhost:5000/
 
-> For detailed steps on what this script does, refer to the ReadMe in the same folder.
+> **IMPORTANT!** The script must be run from within the directory. For detailed steps on what this script does, see the [scripts folder](https://github.com/open-data-toronto/docker-local-environment/tree/master/scripts).
 
 ### Creating a user administrator
 
@@ -76,26 +76,6 @@ A few important notes around creating users:
 1. Command will only work when the CKAN container is running
 2. Users can be created through the UI but they can only be made administrators via the command above
 3. When running that command, the user will be created if it does not exist
-
-### Confirming all containers are running
-
-The `docker container ls` command  will return a list of running containers. There should be 7:
-
-1. *ckan*: CKAN with standard extensions
-2. *db*: CKAN’s database, later also running CKAN’s datastore database
-3. *redis*: A pre-built Redis image.
-4. *solr*: A pre-built SolR image set up for CKAN.
-5. *datapusher*: A pre-built CKAN Datapusher image.
-6. *wordpress*: the Front-End of the portal, in WordPress (http://localhost:8080/)
-7. *mysql*: persistent mySQL database for WordPress content
-
-There should also be four named Docker volumes (`docker volume ls | grep docker`) prefixed with the Docker Compose project name (default: `docker` or value of host environment variable `COMPOSE_PROJECT_NAME`.)
-
-1. *docker_ckan_config*: home of production.ini
-2. *docker_ckan_home*: files used by CKAN
-3. *docker_ckan_storage*: filestore (i.e. where dataset resources are stored)
-4. *docker_pg_data*: data for CKAN’s Postgres database
-5. *docker_solr*: persistent solr data
 
 ### Developing on CKAN
 
