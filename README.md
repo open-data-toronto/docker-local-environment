@@ -125,6 +125,13 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 
 > **Note**: Will work for both CKAN *AND* WordPress, because they are under the same Docker Compose file. This could be decoupled in the future.
 
+## 4. Limitations
+
+Although we constantly strive to make the environment as close to reality as possible, but there are a number of issues we are still working through:
+
+* Datapusher is not working, uploaded files are not pushed to the datastore. In the meantime, use the [Datastore API](https://docs.ckan.org/en/2.8/maintaining/datastore.html)
+* Featured posts are not dispayed in homepage
+
 ## 5. Troubleshooting
 
 > *Note*: all docker-compose commands must be run from the location of the docker-compose.yml file, which by default is at `open-data-workspace/stack/ckan/contrib/docker`
