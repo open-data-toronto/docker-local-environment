@@ -15,7 +15,7 @@ For the time being, Quick Start only works for Linux and MacOS. Expansion to Win
 
 ### 1.2. Folder structure
 
-For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the `**workspace directory**`. Essentially:
+For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the *workspace directory*. Essentially:
 
 ```
 
