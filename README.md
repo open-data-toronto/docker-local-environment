@@ -99,7 +99,7 @@ Go to `Settings --> Permalinks`, select `Post name` under Common Settings, and s
 
 Go to `Pages` and create the following pages:
 
-* Page: Data Catalogue
+* Page: Catalogue
   * Permalink: http://localhost:8080/catalogue/
   * Template: Catalogue Page
 * Page: Homepage
