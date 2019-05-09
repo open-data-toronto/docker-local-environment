@@ -39,7 +39,7 @@ if __name__ == '__main__':
         apikey=apikey
     )
 
-    organization = input('What\'s your organization\'s name?\n')
+    organization = 'Example Organization'
     organization = ckan.action.organization_create(
         name=re.sub('[^0-9a-zA-Z]+', '-', organization).lower(),
         title=organization
