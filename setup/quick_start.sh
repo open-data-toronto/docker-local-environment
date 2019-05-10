@@ -1,37 +1,50 @@
 #! /bin/sh
-SCRIPTS_DIR="$(pwd)"
+SETUP_DIR="$(pwd)"
 OPEN_DATA_ORG="open-data-toronto"
 
-MAIN_DIR="$SCRIPTS_DIR/.."
+MAIN_DIR="$SETUP_DIR/.."
 WORKSPACE_DIR="$MAIN_DIR/.."
-CONFIG_DIR="$MAIN_DIR/config"
+FILES_DIR="$SETUP_DIR/files"
+SCRIPTS_DIR="$SETUP_DIR/scripts"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
+WP_THEME_DIR="$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
-ADMIN_USERNAME="admin"
 CKAN_GIT="https://github.com/ckan/ckan.git"
 CKAN_TAG="ckan-2.8.0"
 
 CKAN_RESTART_COUNT=5
-SLEEP_SECS=6
+SLEEP_SECS=60
 
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto" "wp-open-data-toronto")
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.1.1" "wp-open-data-toronto:v2.1.1")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
-
 
 # Set up OD workspace
 echo "INFO | Setting up OD workspace"
-for repo in "${OPEN_DATA_REPOS[@]}"
+for repo_string in "${OPEN_DATA_REPOS[@]}"
   do
+      arrIN=(${repo_string//:/ })
+      repo=${arrIN[0]}
+      tag=${arrIN[1]}
+      if [[ "$tag" == "" ]]; then
+        tag="master"
+      fi
+
     if [ -d "$WORKSPACE_DIR/$repo" ]; then
       echo "INFO | Pulling repo: $repo"
       cd "$WORKSPACE_DIR/$repo"
+      git reset --hard
+      git checkout master
       git pull
     else
       echo "INFO | Cloning repo: $repo"
       git clone "https://github.com/$OPEN_DATA_ORG/$repo.git" "$MAIN_DIR/../$repo"
     fi
+
+    cd "$WORKSPACE_DIR/$repo"
+    git checkout $tag
+
   done
 
 # Create Open Data Stack folder
@@ -57,36 +70,35 @@ git checkout $CKAN_TAG
 
 # Prepare Open Data configuration files
 echo "INFO | Preparing Open Data configuration files"
-cp "$CONFIG_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
-cp "$CONFIG_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$FILES_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
+cp "$FILES_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$FILES_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "INFO | Configuring files for MacOS."
-    sed -i '' 's|"ckanAPI": window.location.protocol + "//" + ckan + "/api/3/action/", "ckanURL": window.location.protocol + "//" + ckan|"ckanAPI":"http://localhost:5000/api/3/action/", "ckanURL":"http://localhost:5000"|g' "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
-    echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
-    
     sed -i '' 's,CKAN_SITE_URL=http://localhost:5000,# CKAN_SITE_URL=http://localhost:5000,g' "$CKAN_DOCKER_DIR/.env" && \
     sed -i '' 's,# CKAN_SITE_URL=http://docker.for.mac.localhost:5000,CKAN_SITE_URL=http://docker.for.mac.localhost:5000,g' "$CKAN_DOCKER_DIR/.env" && \
     echo "INFO | .env file CKAN_SITE_URL set to http://docker.for.mac.localhost:5000"
-    
+
     sed -i '' 's|mdillon/postgis|mdillon/postgis:9.6|g' "$CKAN_DOCKER_DIR/postgresql/Dockerfile" && \
     echo "INFO | Postgres Dockerfile updated to pull Postgresql version 9.6"
 
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     echo "INFO | Configuring files for Linux."
-    sed -i 's|"ckanAPI": window.location.protocol + "//" + ckan + "/api/3/action/", "ckanURL": window.location.protocol + "//" + ckan|"ckanAPI":"http://localhost:5000/api/3/action/", "ckanURL":"http://localhost:5000"|g' "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js" && \
-    echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
-
     sed -i 's|mdillon/postgis|mdillon/postgis:9.6|g' "$CKAN_DOCKER_DIR/postgresql/Dockerfile" && \
     echo "INFO | Postgres Dockerfile updated to pull Postgresql version 9.6"
 fi
+
+echo "// replacing CKAN URLs to point to localhost" >> "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
+echo "config = { 'ckanAPI': 'http://localhost:5000' + '/api/3/action/', 'ckanURL': 'http://localhost:5000' }" >> "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
+echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
 
 # initializing Open Data environment
 cd $CKAN_DOCKER_DIR
 docker-compose up -d --build
 
-# ensuring DB container starts before CKAN container 
+# ensuring DB container starts before CKAN container
 echo "INFO | Checking that Postgres started before CKAN"
 for ((n=0;n<$CKAN_RESTART_COUNT;n++))
   do
@@ -129,22 +141,34 @@ fi
 
 
 sleep $SLEEP_SECS
+
 # install DataStore
 echo "INFO | Installing CKAN Datastore"
 docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissions -c /etc/ckan/production.ini | docker exec -i db psql -U ckan
 
-sleep $SLEEP_SECS
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
-docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install.sh
+docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/setup/scripts/install_ckan_extensions.sh
 
-sleep $SLEEP_SECS
 # restart CKAN
 echo "INFO | Restarting CKAN once more to apply extensions"
 docker-compose restart ckan
 
-echo "INFO | Quick start finished"
-read -t 10 -p "Create an administrator user, $ADMIN_USERNAME? [y/n] " yn
+sleep $SLEEP_SECS
+
+echo
+echo
+echo "================================================================================"
+echo
+echo "INFO | CKAN Installed and configured"
+echo
+echo "================================================================================"
+echo
+echo
+
+echo "INFO | Create administrator"
+read -p "Enter username: " ADMIN_USERNAME
+read -p "Create user $ADMIN_USERNAME? [y/n] " yn
 case $yn in
     [Yy]* ) docker exec -it ckan /usr/local/bin/ckan-paster --plugin=ckan sysadmin -c /etc/ckan/production.ini add $ADMIN_USERNAME;; #; break;;
     [Nn]* ) echo "INFO | Admin user will need to be created. Skipping.";;
