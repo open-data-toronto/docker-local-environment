@@ -51,6 +51,6 @@ There should also be four named Docker volumes (`docker volume ls | grep docker`
 
 After environment is initialized, this script loads it with example data to give an idea of the functionality of the portal.
 
-  . load_examples.sh **<API_KEY>**
+    . load_examples.sh <API_KEY>
 
 > **Note**: Requires an *API_KEY*. To get it go to CKAN ([http://localhost:5000](http://localhost:5000)), log in with the account created at the end of the `quick_start.sh` script above, click on the username in the top right, and copy from the sidebar on the left.
