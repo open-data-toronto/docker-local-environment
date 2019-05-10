@@ -10,7 +10,7 @@ virtualenv setup
   pip install -U pip
   pip install ckanapi geopandas
 
-  cd /open-data-workspace/docker-local-environment/ckan_init/
+  cd /open-data-workspace/docker-local-environment/setup/scripts/
 
   python ckan_init.py $1
   
