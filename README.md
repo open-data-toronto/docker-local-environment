@@ -122,7 +122,7 @@ After the environment is online, you can load the environment with a number of e
 
 To populate it, log into CKAN and get the API Key from the user page. Then run the command below from `open-data-workspace/docker-local-environment/setup`, substituting **<API_KEY>** with the one from above.
 
-    . load_examples.sh <API_KEY>
+  . load_examples.sh **<API_KEY>**
 
 Afterwards, the environment will be loaded with 4 datasets: geospatial - polygons, geospatial - points, tabular, and document.
 
