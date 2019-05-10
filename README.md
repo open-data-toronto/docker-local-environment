@@ -19,13 +19,9 @@ For the time being, Quick Start only works for Linux and MacOS. Expansion to Win
 
 For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the *workspace directory*. Essentially:
 
-```
-
-open-data-workspace
-│
-└─── docker-local-environment (this repository)
-
-```
+  open-data-workspace
+  │
+  └─── docker-local-environment (this repository)
 
 > **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process. Repos that already exist in the workspace directory will be reset and any changes will be lost - 
 
@@ -51,13 +47,13 @@ To verify a successful Docker Compose installation, run `docker-compose version`
 
 To install CKAN and the extensions we use in Open Data, we recommend running the "quick start" script we created to simplify this process and minimize errors.
 
-Go to `open-data-workspace/docker-local-environment/scripts` and run via:
+Go to `open-data-workspace/docker-local-environment/setup` and run via:
 
     . quick_start_ckan.sh
 
 CKAN will then be available at: http://localhost:5000/
 
-> **IMPORTANT!** The script must be run from within the directory. For detailed steps on what this script does, see the [scripts folder](https://github.com/open-data-toronto/docker-local-environment/tree/master/scripts).
+> **IMPORTANT!** The script must be run from within the directory. For detailed steps on what this script does, see the [scripts folder](https://github.com/open-data-toronto/docker-local-environment/tree/master/setup/scripts).
 
 #### Creating an administrator user
 
@@ -124,11 +120,9 @@ Next, need to set the homepage. Go to `Settings --> Reading` and, under `Your ho
 
 After the environment is online, you can load the environment with a number of example datasets to give an idea of the different features in the portal.
 
-To populate it, log into CKAN and get the API Key from the user page.
+To populate it, log into CKAN and get the API Key from the user page. Then run the command below from `open-data-workspace/docker-local-environment/setup`, substituting **<API_KEY>** with the one from above.
 
-Then run the command below from any directory, substituting **<API_KEY>** with the one from above.
-
-    docker exec ckan bash /open-data-workspace/docker-local-environment/scripts/ckan_init.sh <API_KEY>
+    . load_examples.sh <API_KEY>
 
 Afterwards, the environment will be loaded with 4 datasets: geospatial - polygons, geospatial - points, tabular, and document.
 

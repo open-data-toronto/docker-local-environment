@@ -10,6 +10,7 @@ import geopandas as gpd
 import pandas as pd
 import requests
 
+files_dir = "../examples"
 
 def get_type(series):
     if series.name == 'geometry':
@@ -86,14 +87,14 @@ if __name__ == '__main__':
         package_id=package_document['id'],
         name='Document Data',
         resource_type='upload',
-        url='./BodySafe Data.csv',
+        url='{files_dir}/BodySafe Data.csv'.format(files_dir=files_dir),
         format='CSV',
         is_preview='false'
     )
 
     print('Sample document package successfully created and populated with resource')
 
-    tabular = pd.read_csv('./BodySafe Data.csv')
+    tabular = pd.read_csv('{files_dir}/BodySafe Data.csv'.format(files_dir=files_dir))
     package_tabular = ckan.action.package_create(
         name='example-tabular-data',
         title='Example Tabular Data',
@@ -126,7 +127,7 @@ if __name__ == '__main__':
 
     print('Sample tabular package successfully created and populated with resource')
 
-    points = gpd.read_file('./Bicycle Shops Data.geojson')
+    points = gpd.read_file('{files_dir}/Bicycle Shops Data.geojson'.format(files_dir=files_dir))
     points['geometry'] = points['geometry'].apply(lambda x: json.dumps(mapping(x)))
 
     package_points = ckan.action.package_create(
@@ -161,7 +162,7 @@ if __name__ == '__main__':
 
     print('Sample maps package (points) successfully created and populated with resource')
 
-    polygons = gpd.read_file('./City Wards Data.geojson')
+    polygons = gpd.read_file('{files_dir}/City Wards Data.geojson'.format(files_dir=files_dir))
     polygons['geometry'] = polygons['geometry'].apply(lambda x: json.dumps(mapping(x)))
 
     package_polygons = ckan.action.package_create(
