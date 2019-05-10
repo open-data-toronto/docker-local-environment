@@ -1,10 +1,11 @@
 #! /bin/sh
-SCRIPTS_DIR="$(pwd)"
+SETUP_DIR="$(pwd)"
 OPEN_DATA_ORG="open-data-toronto"
 
-MAIN_DIR="$SCRIPTS_DIR/.."
+MAIN_DIR="$SETUP_DIR/.."
 WORKSPACE_DIR="$MAIN_DIR/.."
-CONFIG_DIR="$MAIN_DIR/config"
+FILES_DIR="$SETUP_DIR/files"
+SCRIPTS_DIR="$SETUP_DIR/scripts"
 STACK_DIR="$WORKSPACE_DIR/stack"
 CKAN_DIR="$STACK_DIR/ckan"
 CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
@@ -69,9 +70,9 @@ git checkout $CKAN_TAG
 
 # Prepare Open Data configuration files
 echo "INFO | Preparing Open Data configuration files"
-cp "$CONFIG_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
-cp "$CONFIG_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
-cp "$CONFIG_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
+cp "$FILES_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
+cp "$FILES_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$FILES_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -147,7 +148,7 @@ docker exec ckan /usr/local/bin/ckan-paster --plugin=ckan datastore set-permissi
 
 # install Open Data components
 echo "INFO | Installing Open Data extensions"
-docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/scripts/install_ckan_extensions.sh
+docker exec --user 0 ckan bash /open-data-workspace/docker-local-environment/setup/scripts/install_ckan_extensions.sh
 
 # restart CKAN
 echo "INFO | Restarting CKAN once more to apply extensions"
