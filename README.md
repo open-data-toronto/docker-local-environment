@@ -19,9 +19,9 @@ For the time being, Quick Start only works for Linux and MacOS. Expansion to Win
 
 For this walkthrough we assume a directory will host all the [Toronto Open Data repositories](https://github.com/open-data-toronto) needed. In this tutorial we call it `open-data-workspace`  and refer to it as the *workspace directory*. Essentially:
 
-  open-data-workspace
-  │
-  └─── docker-local-environment (this repository)
+    open-data-workspace
+    |
+    └─── docker-local-environment (this repository)
 
 > **IMPORTANT!**: Relevant Toronto Open Data git repositories will be cloned into folders created in the *workspace directory* throughout this process. Repos that already exist in the workspace directory will be reset and any changes will be lost - 
 
