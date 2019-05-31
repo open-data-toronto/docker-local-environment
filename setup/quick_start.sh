@@ -12,12 +12,12 @@ CKAN_DOCKER_DIR="$CKAN_DIR/contrib/docker"
 WP_THEME_DIR="$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto"
 
 CKAN_GIT="https://github.com/ckan/ckan.git"
-CKAN_TAG="ckan-2.8.0"
+CKAN_TAG="ckan-2.8.2"
 
 CKAN_RESTART_COUNT=5
 SLEEP_SECS=60
 
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.1.1" "wp-open-data-toronto:v2.1.1")
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.1.2" "wp-open-data-toronto:v2.1.2")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
 
 # Set up OD workspace
@@ -72,7 +72,6 @@ git checkout $CKAN_TAG
 echo "INFO | Preparing Open Data configuration files"
 cp "$FILES_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
 cp "$FILES_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
-cp "$FILES_DIR/homepage.php" "$WP_THEME_DIR/homepage.php"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
