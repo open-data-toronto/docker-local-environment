@@ -72,6 +72,7 @@ git checkout $CKAN_TAG
 echo "INFO | Preparing Open Data configuration files"
 cp "$FILES_DIR/docker-compose.yml" "$CKAN_DOCKER_DIR/docker-compose.yml"
 cp "$FILES_DIR/ckan-entrypoint.sh" "$CKAN_DOCKER_DIR/ckan-entrypoint.sh"
+cp "$FILES_DIR/config.js" "$WP_THEME_DIR/js/config.js"
 cp "$CKAN_DOCKER_DIR/.env.template" "$CKAN_DOCKER_DIR/.env"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -88,10 +89,6 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     sed -i 's|mdillon/postgis|mdillon/postgis:9.6|g' "$CKAN_DOCKER_DIR/postgresql/Dockerfile" && \
     echo "INFO | Postgres Dockerfile updated to pull Postgresql version 9.6"
 fi
-
-echo "// replacing CKAN URLs to point to localhost" >> "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
-echo "config = { 'ckanAPI': 'http://localhost:5000' + '/api/3/action/', 'ckanURL': 'http://localhost:5000' }" >> "$WORKSPACE_DIR/wp-open-data-toronto/wp-open-data-toronto/js/utils.js"
-echo "INFO | CKAN URL in WordPress utils.js will point to localhost:5000"
 
 # initializing Open Data environment
 cd $CKAN_DOCKER_DIR
