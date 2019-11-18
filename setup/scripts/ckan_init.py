@@ -100,7 +100,7 @@ if __name__ == '__main__':
         title='Example Tabular Data',
         private=False,
         owner_org=organization['id'],
-        dataset_category='Tabular',
+        dataset_category='Table',
         is_retired='false',
         pipeline_stage='Published',
         refresh_rate='Daily',
