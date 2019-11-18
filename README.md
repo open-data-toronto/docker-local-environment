@@ -43,6 +43,8 @@ To verify a successful Docker Compose installation, run `docker-compose version`
 
 ## 2. Set-up
 
+WordPress is configured to fetch content from CKAN via API calls. The URLs for CKAN is configured within `wp-open-data-toronto\wp-open-data-toronto\js`. 
+
 ### 2.1. CKAN
 
 To install CKAN and the extensions we use in Open Data, we recommend running the "quick start" script we created to simplify this process and minimize errors.
