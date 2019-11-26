@@ -141,7 +141,7 @@ To bring the environment "up" (online) or "down" (i.e. shut down) will need to g
 
 Although we constantly strive to make the environment as close to reality as possible, but there are a number of issues we are still working through:
 
-* Datapusher is not working, uploaded files are not pushed to the datastore. In the meantime, use the [Datastore API](https://docs.ckan.org/en/2.8/maintaining/datastore.html)
+* Datapusher has been disabled, so uploaded files are not pushed to the DataStore automatically. In the meantime, use the [Datastore API](https://docs.ckan.org/en/2.8/maintaining/datastore.html)
 * Featured posts are not dispayed in homepage
 
 ## 5. Troubleshooting
