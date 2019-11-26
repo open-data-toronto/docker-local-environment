@@ -17,7 +17,7 @@ CKAN_TAG="ckan-2.8.2"
 CKAN_RESTART_COUNT=5
 SLEEP_SECS=60
 
-declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.2.0-qa.0" "wp-open-data-toronto:v2.2.0-qa.0")
+declare -a OPEN_DATA_REPOS=("ckan-customization-open-data-toronto:v2.2.0-qa.1" "wp-open-data-toronto:v2.2.0-qa.1")
 declare -a STACK_CONTAINERS=("ckan" "db" "redis" "solr" "datapusher" "wordpress" "mysql")
 
 # Set up OD workspace
